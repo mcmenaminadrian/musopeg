@@ -5,7 +5,7 @@
 class BigJPEG
 {
 public:
-	BigJPEG();
+	BigJPEG(std::string fileName);
 };
 
 #endif // BIGJPEG_H

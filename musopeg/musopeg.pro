@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    bigjpeg.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    bigjpeg.h
 
 FORMS    += mainwindow.ui
