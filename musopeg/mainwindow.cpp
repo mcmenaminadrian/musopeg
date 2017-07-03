@@ -1,11 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 #include <string>
 #include <cstring>
 #include <vector>
 #include <QPixmap>
 #include <QGraphicsScene>
-
+#include <QGraphicsPixmapItem>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -34,6 +35,6 @@ void MainWindow::on_pushButton_clicked()
 		BigJPEG *holder = new BigJPEG(JPEGName);
 		QGraphicsScene* showUs = new QGraphicsScene(this);
 		ui->graphicsView->setScene(showUs);
-		showUs->addPixmap(*(holder->topImage));
+		QGraphicsPixmapItem* tI = showUs->addPixmap(*(holder->topImage));
 }
 
