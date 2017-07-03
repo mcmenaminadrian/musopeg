@@ -5,6 +5,9 @@
 #include <setjmp.h>
 #include <string>
 #include <vector>
+#include <QPixmap>
+#include <QByteArray>
+#include <QImage>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -43,6 +46,7 @@ BigJPEG::BigJPEG(const string& fileName)
 		storeScannedLine(buffer);
 	}
 
+	/*
 	for (int i = 0; i < lines.size(); i++) {
 		char *innerLine = lines.at(i);
 		for (int j = 0; j < row_stride; j= j + cinfo.output_components) {
@@ -57,7 +61,20 @@ BigJPEG::BigJPEG(const string& fileName)
 			cout << ")";
 		}
 		cout << endl;
+	} */
+
+	topImage = new QPixmap(cinfo.image_width, 20);
+	QByteArray rawArray;
+	for (int i = 0; i < 20; i++){
+		char* innerLine = lines.at(i);
+		for (int j = 0; j < row_stride; j++) {
+			rawArray.append(innerLine[j]);
+		}
 	}
+
+
+	topImage->loadFromData(rawArray, "BMP");
+
 
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);

@@ -3,6 +3,9 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <QPixmap>
+#include <QGraphicsScene>
+
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -29,4 +32,8 @@ void MainWindow::on_pushButton_clicked()
 {
     //load the JPEG and decompress it
 		BigJPEG *holder = new BigJPEG(JPEGName);
+		QGraphicsScene* showUs = new QGraphicsScene(this);
+		ui->graphicsView->setScene(showUs);
+		showUs->addPixmap(*(holder->topImage));
 }
+
