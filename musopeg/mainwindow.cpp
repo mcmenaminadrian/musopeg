@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <string>
 #include <cstring>
+#include <vector>
+#include "jpeglib.h"
 #include "bigjpeg.h"
 
 using namespace std;
@@ -18,15 +20,13 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-void MainWindow::setJPEGName(char *arg)
+void MainWindow::setJPEGName(string name)
 {
-	strcpy(arg, JPEGName.c_str());
+	JPEGName = name;
 }
-
-
 
 void MainWindow::on_pushButton_clicked()
 {
     //load the JPEG and decompress it
-	BigJPEG *holder = new BigJPEG(JPEGName);
+		BigJPEG *holder = new BigJPEG(JPEGName);
 }

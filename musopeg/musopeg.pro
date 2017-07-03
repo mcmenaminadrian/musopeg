@@ -20,3 +20,5 @@ HEADERS  += mainwindow.h \
     bigjpeg.h
 
 FORMS    += mainwindow.ui
+
+unix:!macx: LIBS += -ljpeg
