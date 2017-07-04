@@ -35,6 +35,7 @@ void MainWindow::on_pushButton_clicked()
 		BigJPEG *holder = new BigJPEG(JPEGName);
 		QGraphicsScene* showUs = new QGraphicsScene(this);
 		ui->graphicsView->setScene(showUs);
-		QGraphicsPixmapItem* tI = showUs->addPixmap(*(holder->topImage));
+		QPixmap strip = QPixmap::fromImage(*(holder->topImage));
+		QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
 }
 

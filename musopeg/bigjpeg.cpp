@@ -6,7 +6,6 @@
 #include <setjmp.h>
 #include <string>
 #include <vector>
-#include <QPixmap>
 #include <QByteArray>
 #include <QImage>
 #include "jpeglib.h"
@@ -49,41 +48,14 @@ BigJPEG::BigJPEG(const string& fileName)
 
 
 
-	topImage = new QPixmap(cinfo.image_width, 20);
-	QByteArray rawArray;
-	rawArray.append('B');
-	rawArray.append('M');
-	u_int32_t sizeOfBMP = row_stride * 20 + 14 + 12;
-	rawArray.append(sizeOfBMP & 0xFF);
-	rawArray.append((sizeOfBMP >> 8) & 0xFF);
-	rawArray.append((sizeOfBMP >> 16) & 0xFF);
-	rawArray.append((sizeOfBMP >> 24) & 0xFF);
-	rawArray.append(0x12);
-	rawArray.append('\0');
-	rawArray.append('\0');
-	rawArray.append('\0');
-	uint16_t widthO = cinfo.output_width;
-	rawArray.append(widthO & 0xFF);
-	rawArray.append((widthO >> 8) & 0xFF);
-	uint16_t heightO = cinfo.output_height;
-	rawArray.append(heightO & 0xFF);
-	rawArray.append((heightO >> 8) & 0xFF);
-	rawArray.append(0x01);
-	rawArray.append('\0');
-	rawArray.append(0x08);
-	rawArray.append('\0');
-
+	topImage = new QImage(cinfo.image_width, 20, QImage::Format_RGB888);
 	for (int i = 0; i < 20; i++){
-
 		char* innerLine = lines.at(i);
-		for (int j = 0; j < row_stride; j++) {
-			rawArray.append(innerLine[j]);
+		for (int j = 0; j < row_stride; j = j + 3) {
+			QRgb pixels = qRgb(innerLine[j], innerLine[j + 1], innerLine[j + 2]);
+			topImage->setPixel(i, j/3, pixels);
 		}
 	}
-
-
-	bool loaded = topImage->loadFromData(rawArray);
-	cout << "loaded returns " << loaded << endl;
 
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);

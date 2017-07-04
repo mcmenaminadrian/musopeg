@@ -11,7 +11,7 @@ private:
 	bool storeScannedLine(const JSAMPARRAY sampledLine);
 
 public:
-	QPixmap* topImage;
+	QImage* topImage;
 	BigJPEG(const std::string& fileName);
 
 };
