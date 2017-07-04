@@ -1,14 +1,26 @@
 #ifndef BIGJPEG_H
 #define BIGJPEG_H
 
+#include <QObject>
+#include "jpeglib.h"
 
-class BigJPEG
+class BigJPEG : public QObject
 {
+	Q_OBJECT
+
 private:
 	int byteWidth;
-	std::vector<char *> lines;
+	std::vector<unsigned char *> lines;
 	void setByteWidth(const int& count);
-	bool storeScannedLine(const JSAMPARRAY sampledLine);
+	bool storeScannedLine(JSAMPROW sampledLine);
+	int wD, hD, sW, sH;
+	struct jpeg_decompress_struct cInfo;
+	void display(const struct jpeg_decompress_struct& dinfo, int widthD, int heightD,
+		 int startW, int startH);
+
+public slots:
+	void displayImages();
+
 
 public:
 	QImage* topImage;

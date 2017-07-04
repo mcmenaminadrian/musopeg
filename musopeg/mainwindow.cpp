@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QObject>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -35,7 +36,13 @@ void MainWindow::on_pushButton_clicked()
 		BigJPEG *holder = new BigJPEG(JPEGName);
 		QGraphicsScene* showUs = new QGraphicsScene(this);
 		ui->graphicsView->setScene(showUs);
-		QPixmap strip = QPixmap::fromImage(*(holder->topImage));
-		QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
+		//QPixmap strip = QPixmap::fromImage(*(holder->topImage));
+		//QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
+		QObject::connect(this, SIGNAL(nextImage()), holder,
+			SLOT(displayImages()));
 }
 
+void MainWindow::on_pushButton2_clicked()
+{
+	emit nextImage();
+}

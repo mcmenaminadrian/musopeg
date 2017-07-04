@@ -6,8 +6,10 @@
 #include <setjmp.h>
 #include <string>
 #include <vector>
+#include <QObject>
 #include <QByteArray>
 #include <QImage>
+#include <QThread>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -34,31 +36,26 @@ BigJPEG::BigJPEG(const string& fileName)
 	jpeg_stdio_src(&cinfo, inFile);
 
 	jpeg_read_header(&cinfo, TRUE);
+	cinfo.out_color_space = JCS_GRAYSCALE;
 	jpeg_start_decompress(&cinfo);
 	row_stride = cinfo.output_width * cinfo.output_components;
 	setByteWidth(row_stride);
-	//buffer = (JSAMPARRAY)malloc(row_stride);
 	buffer = (*cinfo.mem->alloc_sarray) ((j_common_ptr)
 		&cinfo, JPOOL_IMAGE, row_stride, 1);
 
 	while (cinfo.output_scanline < cinfo.output_height) {
 		jpeg_read_scanlines(&cinfo, buffer, 1);
-		storeScannedLine(buffer);
+		storeScannedLine(buffer[0]);
 	}
+	cInfo = cinfo;
+	wD = cinfo.output_width;
+	hD = 200;
+	sW = 0;
+	sH = 0;
 
 
-
-	topImage = new QImage(cinfo.image_width, 20, QImage::Format_RGB888);
-	for (int i = 0; i < 20; i++){
-		char* innerLine = lines.at(i);
-		for (int j = 0; j < row_stride; j = j + 3) {
-			QRgb pixels = qRgb(innerLine[j], innerLine[j + 1], innerLine[j + 2]);
-			topImage->setPixel(i, j/3, pixels);
-		}
-	}
-
-	jpeg_finish_decompress(&cinfo);
-	jpeg_destroy_decompress(&cinfo);
+//	jpeg_finish_decompress(&cinfo);
+//	jpeg_destroy_decompress(&cinfo);
 
 
 }
@@ -68,11 +65,42 @@ void BigJPEG::setByteWidth(const int &count)
 	byteWidth = count;
 }
 
-bool BigJPEG::storeScannedLine(const JSAMPARRAY sampledLine)
+bool BigJPEG::storeScannedLine(JSAMPROW sampledLine)
 {
-	char lineIn[byteWidth];
-	strncpy(lineIn, (const char*)sampledLine, byteWidth);
+	unsigned char* lineIn = (unsigned char *)malloc(byteWidth);
+	memcpy(lineIn, sampledLine, byteWidth);
 	lines.push_back(lineIn);
 	return true;
 }
 
+void BigJPEG::displayImages()
+{
+	display(cInfo, wD, hD, sW, sH);
+}
+
+void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, int heightD,
+	int startW, int startH)
+{
+	if (widthD < 100) {
+		return;
+	}
+	if (heightD < 100) {
+		heightD = 100;
+	}
+	topImage = new QImage(widthD, heightD, QImage::Format_Grayscale8);
+	for (int i = startH; i < startH + heightD; i++){
+		unsigned char* innerLine = lines.at(i);
+		for (int j = startW; j < startW + widthD; j++)
+		{
+			uint8_t value = 0;
+			if (*(innerLine + j) > 127) {
+				value = 255;
+			}
+			QRgb pixels = qRgb(value, value, value);
+			topImage->setPixel(j, i, pixels);
+		}
+	}
+
+	wD = widthD / 2;
+	hD = heightD / 2;
+}
