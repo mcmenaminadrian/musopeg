@@ -52,12 +52,24 @@ BigJPEG::BigJPEG(const string& fileName)
 	hD = 200;
 	sW = 0;
 	sH = 0;
+	topImage = nullptr;
 
+	jpeg_finish_decompress(&cinfo);
+	jpeg_destroy_decompress(&cinfo);
 
-//	jpeg_finish_decompress(&cinfo);
-//	jpeg_destroy_decompress(&cinfo);
+}
 
-
+BigJPEG::~BigJPEG()
+{
+	int j = lines.size();
+	for (int i = 0; i < j; i++)
+	{
+		unsigned char *lineOut = lines.pop_back();
+		free(lineOut);
+	}
+	if (topImage) {
+		delete topImage;
+	}
 }
 
 void BigJPEG::setByteWidth(const int &count)
@@ -81,6 +93,8 @@ void BigJPEG::displayImages()
 void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, int heightD,
 	int startW, int startH)
 {
+	delete topImage;
+	topImage = nullptr;
 	if (widthD < 100) {
 		return;
 	}

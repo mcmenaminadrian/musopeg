@@ -27,6 +27,7 @@ signals:
 public:
 	QImage* topImage;
 	BigJPEG(const std::string& fileName);
+	~BigJPEG();
 
 };
 
