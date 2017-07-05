@@ -92,15 +92,12 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 		unsigned char* innerLine = lines.at(i);
 		for (int j = startW; j < startW + widthD; j++)
 		{
-			uint8_t value = 0;
-			if (*(innerLine + j) > 127) {
-				value = 255;
-			}
 			QRgb pixels = qRgb(value, value, value);
 			topImage->setPixel(j, i, pixels);
 		}
 	}
 
+	emit updateImages();
 	wD = widthD / 2;
 	hD = heightD / 2;
 }

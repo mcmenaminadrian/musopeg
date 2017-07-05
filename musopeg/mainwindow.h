@@ -21,10 +21,12 @@ signals:
 private slots:
 	void on_pushButton_clicked();
 	void on_pushButton2_clicked();
+	void updateGraphics();
 
 private:
 	Ui::MainWindow *ui;
 	std::string JPEGName;
+	QGraphicsScene *showUs;
 };
 
 #endif // MAINWINDOW_H
