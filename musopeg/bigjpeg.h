@@ -20,6 +20,8 @@ private:
 
 public slots:
 	void displayImages();
+signals:
+	void updateImages();
 
 
 public:

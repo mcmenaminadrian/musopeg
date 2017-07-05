@@ -33,16 +33,23 @@ void MainWindow::setJPEGName(string name)
 void MainWindow::on_pushButton_clicked()
 {
     //load the JPEG and decompress it
-		BigJPEG *holder = new BigJPEG(JPEGName);
-		QGraphicsScene* showUs = new QGraphicsScene(this);
-		ui->graphicsView->setScene(showUs);
-		//QPixmap strip = QPixmap::fromImage(*(holder->topImage));
-		//QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
-		QObject::connect(this, SIGNAL(nextImage()), holder,
-			SLOT(displayImages()));
+	BigJPEG *holder = new BigJPEG(JPEGName);
+	showUs = new QGraphicsScene(this);
+	ui->graphicsView->setScene(showUs);
+	QObject::connect(this, SIGNAL(nextImage()), holder,
+		SLOT(displayImages()));
+	QObject::connect(holder. SIGNAL(updateImage()), this,
+		SLOT(updateGraphics());
 }
 
 void MainWindow::on_pushButton2_clicked()
-{
+{		
 	emit nextImage();
 }
+
+void MainWindow::updateGraphics()
+{
+	QPixmap strip = QPixmap::fromImage(*(holder->topImage));
+	QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
+}
+
