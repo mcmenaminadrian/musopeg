@@ -197,20 +197,20 @@ void BigJPEG::_badImage()
 				startingWidth = quarterWidth;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
-				_displayImages();
+				return _displayImages();
 			} else if (top && startingHeight >= quarterHeight) {
 				startingHeight = quarterHeight;
 				startingWidth = 0;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
-				_displayImages();
+				return _displayImages();
 
 			} else if (left && startingHeight >= (quarterHeight * 2)) {
 				startingHeight = quarterHeight;
 				startingWidth = quarterWidth;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
-				_displayImages();
+				return _displayImages();
 			} else if (startingHeight >= (quarterHeight * 2)) {
 				return;
 			}
@@ -246,7 +246,7 @@ void BigJPEG::_badImage()
 				return _displayImages();
 			}
 		} else if (left && startingWidth >= (quarterWidth * 2)) {
-				startingHeight += 100;
+			startingHeight += 100;
 			if (startingHeight >= (quarterHeight * 2)) {
 				startingHeight = quarterHeight;
 				startingWidth = quarterWidth;
