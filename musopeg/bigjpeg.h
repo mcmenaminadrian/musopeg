@@ -20,6 +20,8 @@ private:
 	void display(const struct jpeg_decompress_struct& dinfo, int widthD, int heightD,
 		 int startW, int startH);
 	void _displayImages();
+	void _badImage();
+	void _goodImage();
 
 public slots:
 	void displayImages();

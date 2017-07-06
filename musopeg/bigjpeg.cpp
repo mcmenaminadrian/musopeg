@@ -101,10 +101,20 @@ void BigJPEG::_displayImages()
 
 void BigJPEG::goodImage()
 {
+	_goodImage();
+}
 
+void BigJPEG::_goodImage()
+{
 }
 
 void BigJPEG::badImage()
+{
+	_badImage();
+
+}
+
+void BigJPEG::_badImage()
 {
 
 	//quarters or strips
@@ -152,8 +162,60 @@ void BigJPEG::badImage()
 				return;
 			}
 		}
+	} else {
+		//100 x 100 blocks
+		bool left = (startingWidth < quarterWidth);
+		bool top = (startingHeight < quarterHeight);
+		startingWidth += 100;
+		if (left && top && startingWidth >= quarterWidth) {
+			startingHeight += 100;
+			if (startingHeight >= quarterHeight) {
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
+				return _displayImages();
+			} else {
+				startingWidth = 0;
+				widthDisplayed = quarterWidth;
+				return _displayImages();
+			}
+		} else if (top && startingWidth >= (quarterWidth * 2)) {
+			startingHeight += 100;
+			if (startingHeight >= quarterHeight) {
+				startingHeight = quarterHeight;
+				startingWidth = 0;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterWidth;
+				return _displayImages();
+			} else {
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				return _displayImages();
+			}
+		} else if (left && startingWidth >= (quarterWidth * 2)) {
+				startingHeight += 100;
+			if (startingHeight >= (quarterHeight * 2)) {
+				startingHeight = quarterHeight;
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
+				return _displayImages();
+			} else {
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				return _displayImages();
+			}
+		} else if (startingWidth >= (quarterWidth * 2)) {
+			startingHeight += 100;
+			if (startingHeight >= (startingHeight * 2)){
+				return;
+			}
+			widthDisplayed = quarterWidth;
+			startingWidth = quarterWidth;
+			return _displayImages();
+		}
 	}
-
+	return _displayImages();
 }
 
 void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, int heightD,
