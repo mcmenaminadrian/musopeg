@@ -20,7 +20,7 @@
       <x>10</x>
       <y>10</y>
       <width>511</width>
-      <height>101</height>
+      <height>231</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -39,14 +39,14 @@
      </rect>
     </property>
     <property name="text">
-     <string>OK</string>
+     <string>Start</string>
     </property>
    </widget>
    <widget class="QPushButton" name="nextButton">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>140</y>
+      <x>20</x>
+      <y>250</y>
       <width>91</width>
       <height>27</height>
      </rect>

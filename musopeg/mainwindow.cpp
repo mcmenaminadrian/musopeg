@@ -43,6 +43,7 @@ void MainWindow::on_pushButton_clicked()
 		SLOT(displayImages()));
 	QObject::connect(holder, SIGNAL(updateImages()), this,
 		SLOT(updateGraphics()));
+	emit nextImage();
 }
 
 void MainWindow::on_nextButton_clicked()

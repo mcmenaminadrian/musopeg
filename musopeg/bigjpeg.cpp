@@ -48,8 +48,8 @@ BigJPEG::BigJPEG(const string& fileName)
 		storeScannedLine(buffer[0]);
 	}
 	cInfo = cinfo;
-	wD = cinfo.output_width;
-	hD = 200;
+	wD = cinfo.output_width / 2;
+	hD = cinfo.output_height / 2;
 	sW = 0;
 	sH = 0;
 	topImage = NULL;
@@ -94,8 +94,11 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 {
 	delete topImage;
 	topImage = NULL;
+//	if (widthD == 50) {
+//		return;
+//	}
 	if (widthD < 100) {
-		return;
+		widthD = 100;
 	}
 	if (heightD < 100) {
 		heightD = 100;
@@ -107,7 +110,7 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 		{
 			uint8_t value = *(innerLine + j);
 			QRgb pixels = qRgb(value, value, value);
-			topImage->setPixel(j, i, pixels);
+			topImage->setPixel(j - startW, i - startH, pixels);
 		}
 	}
 
