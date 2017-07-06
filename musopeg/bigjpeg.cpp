@@ -106,6 +106,59 @@ void BigJPEG::goodImage()
 
 void BigJPEG::_goodImage()
 {
+	//quarters or strips
+	if (widthDisplayed > 100) {
+		if (heightDisplayed > 100) {
+			//show strip
+			heightDisplayed = 100;
+			return _displayImages();
+		} else {
+			//block
+			widthDisplayed = 100;
+			heightDisplayed = 100;
+			return _displayImages();
+		}
+	}
+	//have a good block - need to record it and then move on
+	cout << "(" << startingWidth << "," << startingHeight << "," << widthDisplayed;
+	cout << "," << heightDisplayed << ")";
+	bool left = (startingWidth < quarterWidth);
+	bool top = (startingHeight < quarterHeight);
+	startingWidth += 100;
+	if (left && startingWidth >= quarterWidth) {
+		startingHeight += 100;
+		widthDisplayed = quarterWidth;
+		if (top && startingHeight >= quarterHeight |
+			!top && startingHeight >= (quarterHeight * 2)) {
+			startingWidth = quarterWidth;
+			if (top) {
+				startingHeight = quarterHeight;
+			} else {
+				startingHeight = 0;
+			}
+			heightDisplayed = quarterHeight;
+			return _displayImages();
+		} else {
+			startingWidth = 0;
+			heightDisplayed = 100;
+			return _displayImages();
+		}
+	} else if (startingWidth >= (quarterWidth * 2)) {
+		startingHeight += 100;
+		if (startingHeight >= (quarterHeight * 2)) {
+			return;
+		}
+		widthDisplayed = quarterWidth;
+		startingWidth = 0;
+		if (top && startingHeight >= quarterHeight) {
+			startingHeight = quarterHeight;
+			heightDisplayed = quarterHeight;
+			return _displayImages();
+		} else {
+			return _displayImages();
+		}
+	}
+	return _displayImages();
 }
 
 void BigJPEG::badImage()
@@ -139,13 +192,13 @@ void BigJPEG::_badImage()
 			bool left = (startingWidth < quarterWidth);
 			bool top = (startingHeight < quarterHeight);
 			startingHeight += 100;
-			if (left && top && startingHeight >= quarterHeight) {
+			if (left && top && (startingHeight >= quarterHeight)) {
 				startingHeight = 0;
 				startingWidth = quarterWidth;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
 				_displayImages();
-			} else if (top && startingHeight >= startingHeight) {
+			} else if (top && startingHeight >= quarterHeight) {
 				startingHeight = quarterHeight;
 				startingWidth = 0;
 				widthDisplayed = quarterWidth;
