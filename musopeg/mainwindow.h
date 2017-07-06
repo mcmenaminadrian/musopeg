@@ -19,10 +19,14 @@ public:
 	void setJPEGName(std::string arg);
 signals:
 	void nextImage();
+	void goodImage();
+	void badImage();
+
 
 private slots:
 	void on_pushButton_clicked();
-	void on_nextButton_clicked();
+	void on_goodButton_clicked();
+	void on_badButton_clicked();
 	void updateGraphics();
 
 private:

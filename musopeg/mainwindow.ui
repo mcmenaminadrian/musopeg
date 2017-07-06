@@ -42,18 +42,44 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="nextButton">
+   <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>250</y>
-      <width>91</width>
-      <height>27</height>
+      <width>281</width>
+      <height>51</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Next</string>
+    <property name="title">
+     <string/>
     </property>
+    <widget class="QRadioButton" name="goodButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>108</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Good</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="badButton">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>20</y>
+       <width>108</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Bad</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

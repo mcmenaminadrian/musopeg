@@ -48,10 +48,14 @@ BigJPEG::BigJPEG(const string& fileName)
 		storeScannedLine(buffer[0]);
 	}
 	cInfo = cinfo;
-	wD = cinfo.output_width / 2;
-	hD = cinfo.output_height / 2;
-	sW = 0;
-	sH = 0;
+	widthDisplayed = (cinfo.output_width/100) * 50;
+	heightDisplayed = (cinfo.output_height/100) * 50;
+	widthRag = cinfo.output_width%100;
+	heightRag = cinfo.output_height%100;
+	quarterHeight = heightDisplayed;
+	quarterWidth = widthDisplayed;
+	startingWidth = 0;
+	startingHeight = 0;
 	topImage = NULL;
 
 	jpeg_finish_decompress(&cinfo);
@@ -86,7 +90,70 @@ bool BigJPEG::storeScannedLine(JSAMPROW sampledLine)
 
 void BigJPEG::displayImages()
 {
-	display(cInfo, wD, hD, sW, sH);
+	_displayImages();
+}
+
+void BigJPEG::_displayImages()
+{
+	display(cInfo, widthDisplayed, heightDisplayed,
+		startingWidth, startingHeight);
+}
+
+void BigJPEG::goodImage()
+{
+
+}
+
+void BigJPEG::badImage()
+{
+
+	//quarters or strips
+	if (widthDisplayed > 100) {
+		if (heightDisplayed > 100) {
+			//first quarter and third
+			if (startingWidth == 0) {
+				startingWidth += widthDisplayed;
+				return _displayImages();
+			} else {
+			//second or fourth quarter
+				if (startingHeight > 0) {
+					return;
+				} else {
+					startingWidth = 0;
+					startingHeight += heightDisplayed;
+					return _displayImages();
+				}
+			}
+		} else {
+			//strip
+			bool left = (startingWidth < quarterWidth);
+			bool top = (startingHeight < quarterHeight);
+			startingHeight += 100;
+			if (left && top && startingHeight >= quarterHeight) {
+				startingHeight = 0;
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
+				_displayImages();
+			} else if (top && startingHeight >= startingHeight) {
+				startingHeight = quarterHeight;
+				startingWidth = 0;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
+				_displayImages();
+
+			} else if (left && startingHeight >= (quarterHeight * 2)) {
+				startingHeight = quarterHeight;
+				startingWidth = quarterWidth;
+				widthDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
+				_displayImages();
+			} else if (startingHeight >= (quarterHeight * 2)) {
+				return;
+			}
+		}
+	}
+
 }
 
 void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, int heightD,
@@ -94,9 +161,7 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 {
 	delete topImage;
 	topImage = NULL;
-//	if (widthD == 50) {
-//		return;
-//	}
+
 	if (widthD < 100) {
 		widthD = 100;
 	}
@@ -115,6 +180,4 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 	}
 
 	emit updateImages();
-	wD = widthD / 2;
-	hD = heightD / 2;
 }

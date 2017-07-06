@@ -13,13 +13,19 @@ private:
 	std::vector<unsigned char *> lines;
 	void setByteWidth(const int& count);
 	bool storeScannedLine(JSAMPROW sampledLine);
-	int wD, hD, sW, sH;
+	int widthDisplayed, heightDisplayed;
+	int startingWidth, startingHeight;
+	int widthRag, heightRag, quarterHeight, quarterWidth;
 	struct jpeg_decompress_struct cInfo;
 	void display(const struct jpeg_decompress_struct& dinfo, int widthD, int heightD,
 		 int startW, int startH);
+	void _displayImages();
 
 public slots:
 	void displayImages();
+	void goodImage();
+	void badImage();
+
 signals:
 	void updateImages();
 
