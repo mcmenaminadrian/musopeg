@@ -125,16 +125,16 @@ void BigJPEG::_goodImage()
 	bool left = (startingWidth < quarterWidth);
 	bool top = (startingHeight < quarterHeight);
 	startingWidth += 100;
-	if (left && startingWidth >= quarterWidth) {
+	if (left && (startingWidth >= quarterWidth)) {
 		startingHeight += 100;
 		widthDisplayed = quarterWidth;
-		if (top && startingHeight >= quarterHeight |
-			!top && startingHeight >= (quarterHeight * 2)) {
+		if (top && (startingHeight >= quarterHeight) || (
+			!top && (startingHeight >= (quarterHeight * 2)))) {
 			startingWidth = quarterWidth;
 			if (top) {
-				startingHeight = quarterHeight;
-			} else {
 				startingHeight = 0;
+			} else {
+				startingHeight = quarterHeight;
 			}
 			heightDisplayed = quarterHeight;
 			return _displayImages();
