@@ -1,6 +1,8 @@
-#include "mainwindow.h"
+#include <QGraphicsScene>
 #include <QApplication>
 #include <iostream>
+#include "bigjpeg.h"
+#include "mainwindow.h"
 
 using namespace std;
 

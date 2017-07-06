@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
+#include "bigjpeg.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,12 +22,13 @@ signals:
 
 private slots:
 	void on_pushButton_clicked();
-	void on_pushButton2_clicked();
+	void on_nextButton_clicked();
 	void updateGraphics();
 
 private:
 	Ui::MainWindow *ui;
 	std::string JPEGName;
+	BigJPEG *holder;
 	QGraphicsScene *showUs;
 };
 

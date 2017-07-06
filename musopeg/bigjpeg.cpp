@@ -52,7 +52,7 @@ BigJPEG::BigJPEG(const string& fileName)
 	hD = 200;
 	sW = 0;
 	sH = 0;
-	topImage = nullptr;
+	topImage = NULL;
 
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);
@@ -61,10 +61,9 @@ BigJPEG::BigJPEG(const string& fileName)
 
 BigJPEG::~BigJPEG()
 {
-	int j = lines.size();
-	for (int i = 0; i < j; i++)
+	for (int i = 0; i < lines.size(); i++)
 	{
-		unsigned char *lineOut = lines.pop_back();
+		unsigned char *lineOut = lines.at(i);
 		free(lineOut);
 	}
 	if (topImage) {
@@ -94,7 +93,7 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 	int startW, int startH)
 {
 	delete topImage;
-	topImage = nullptr;
+	topImage = NULL;
 	if (widthD < 100) {
 		return;
 	}
@@ -106,6 +105,7 @@ void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, in
 		unsigned char* innerLine = lines.at(i);
 		for (int j = startW; j < startW + widthD; j++)
 		{
+			uint8_t value = *(innerLine + j);
 			QRgb pixels = qRgb(value, value, value);
 			topImage->setPixel(j, i, pixels);
 		}
