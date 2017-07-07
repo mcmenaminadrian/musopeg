@@ -147,11 +147,7 @@ void BigJPEG::_goodImage()
 			heightDisplayed = quarterHeight;
 			return _displayImages();
 		} else {
-			if (top) {
-				startingWidth = 0;
-			} else {
-				startingWidth = quarterWidth;
-			}
+			startingWidth = 0;
 			heightDisplayed = 100;
 			return _displayImages();
 		}
