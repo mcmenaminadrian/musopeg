@@ -270,7 +270,7 @@ void BigJPEG::_badImage()
 			}
 		} else if (startingWidth >= (quarterWidth * 2)) {
 			startingHeight += 100;
-			if (startingHeight >= (startingHeight * 2)){
+			if (startingHeight >= (quarterHeight * 2)){
 				emit completedRun();
 				return;
 			}
