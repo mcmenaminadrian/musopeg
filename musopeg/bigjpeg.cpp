@@ -10,12 +10,13 @@
 #include <QByteArray>
 #include <QImage>
 #include <QThread>
+#include <QString>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
 using namespace std;
 
-BigJPEG::BigJPEG(const string& fileName)
+BigJPEG::BigJPEG(QString fileName)
 {
 	struct jpeg_decompress_struct cinfo;
 	struct jpeg_error_mgr jerr;
@@ -23,10 +24,10 @@ BigJPEG::BigJPEG(const string& fileName)
 	JSAMPARRAY buffer;
 	int row_stride;
 
-	cerr << "Opening " << fileName << endl;
+	cout << "Opening " << qPrintable(fileName) << endl;
 
-	if ((inFile = fopen(fileName.c_str(), "rb")) == NULL){
-		fprintf(stderr, "cannot open %s\n", fileName.c_str());
+	if ((inFile = fopen(qPrintable(fileName), "rb")) == NULL){
+		fprintf(stderr, "cannot open %s\n", qPrintable(fileName));
 		return;
 	}
 

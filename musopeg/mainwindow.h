@@ -31,7 +31,6 @@ private slots:
 
 private:
 	Ui::MainWindow *ui;
-	std::string JPEGName;
 	BigJPEG *holder;
 	QGraphicsScene *showUs;
 };

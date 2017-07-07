@@ -6,6 +6,8 @@
 #include <QPixmap>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QFileDialog>
+#include <QString>
 #include <QObject>
 #include "jpeglib.h"
 #include "bigjpeg.h"
@@ -28,14 +30,12 @@ MainWindow::~MainWindow()
 	delete holder;
 }
 
-void MainWindow::setJPEGName(string name)
-{
-	JPEGName = name;
-}
-
 void MainWindow::on_pushButton_clicked()
 {
     //load the JPEG and decompress it
+	QString JPEGName = QFileDialog::getOpenFileName(this,
+		tr("Select JPEG"), "", tr("JPEGs (*.jpeg *.jpg *.jfif)"));
+
 	ui->goodButton->setEnabled(true);
 	ui->badButton->setEnabled(true);
 	holder = new BigJPEG(JPEGName);

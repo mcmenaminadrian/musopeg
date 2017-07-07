@@ -2,6 +2,7 @@
 #define BIGJPEG_H
 
 #include <QObject>
+#include <QString>
 #include "jpeglib.h"
 
 class BigJPEG : public QObject
@@ -33,7 +34,7 @@ signals:
 
 public:
 	QImage* topImage;
-	BigJPEG(const std::string& fileName);
+	BigJPEG(QString fileName);
 	~BigJPEG();
 
 };
