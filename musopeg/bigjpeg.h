@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <fstream>
 #include "jpeglib.h"
 
 class BigJPEG : public QObject
@@ -22,6 +23,7 @@ private:
 	void _displayImages();
 	void _badImage();
 	void _goodImage();
+	std::ofstream fileOut;
 
 public slots:
 	void displayImages();
@@ -30,6 +32,7 @@ public slots:
 
 signals:
 	void updateImages();
+	void completedRun();
 
 
 public:

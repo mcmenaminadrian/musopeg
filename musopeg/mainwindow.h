@@ -28,6 +28,7 @@ private slots:
 	void on_goodButton_clicked();
 	void on_badButton_clicked();
 	void updateGraphics();
+	void finishProcess();
 
 private:
 	Ui::MainWindow *ui;

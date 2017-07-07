@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <cstring>
 #include <vector>
@@ -9,6 +10,7 @@
 #include <QFileDialog>
 #include <QString>
 #include <QObject>
+#include <QMessageBox>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 #include "ui_mainwindow.h"
@@ -27,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 	delete ui;
-	delete holder;
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -49,6 +50,8 @@ void MainWindow::on_pushButton_clicked()
 		SLOT(goodImage()));
 	QObject::connect(holder, SIGNAL(updateImages()), this,
 		SLOT(updateGraphics()));
+	QObject::connect(holder, SIGNAL(completedRun()), this,
+		SLOT(finishProcess()));
 	emit nextImage();
 	ui->pushButton->setEnabled(false);
 }
@@ -67,6 +70,15 @@ void MainWindow::updateGraphics()
 {
 	qDeleteAll(showUs->items());
 	QPixmap strip = QPixmap::fromImage(*(holder->topImage));
-	QGraphicsPixmapItem* tI = showUs->addPixmap(strip);
+	showUs->addPixmap(strip);
+}
+
+void MainWindow::finishProcess()
+{
+	QMessageBox messageBox;
+	messageBox.setText("Processing now complete.");
+	messageBox.exec();
+	delete holder;
+	QApplication::quit();
 }
 

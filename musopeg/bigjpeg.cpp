@@ -11,6 +11,8 @@
 #include <QImage>
 #include <QThread>
 #include <QString>
+#include <QRegularExpression>
+#include <fstream>
 #include "jpeglib.h"
 #include "bigjpeg.h"
 
@@ -62,6 +64,10 @@ BigJPEG::BigJPEG(QString fileName)
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);
 	fclose(inFile);
+
+	QString outName = fileName.remove(QRegularExpression("\\..*"));
+	outName += ".data";
+	fileOut.open(qPrintable(outName));
 }
 
 BigJPEG::~BigJPEG()
@@ -74,6 +80,7 @@ BigJPEG::~BigJPEG()
 	if (topImage) {
 		delete topImage;
 	}
+	fileOut.close();
 }
 
 void BigJPEG::setByteWidth(const int &count)
@@ -121,8 +128,8 @@ void BigJPEG::_goodImage()
 		}
 	}
 	//have a good block - need to record it and then move on
-	cout << "(" << startingWidth << "," << startingHeight << "," << widthDisplayed;
-	cout << "," << heightDisplayed << ")";
+	fileOut << startingWidth << "," << startingHeight << "," << widthDisplayed;
+	fileOut << "," << heightDisplayed << endl;
 	bool left = (startingWidth < quarterWidth);
 	bool top = (startingHeight < quarterHeight);
 	startingWidth += 100;
@@ -147,6 +154,7 @@ void BigJPEG::_goodImage()
 	} else if (startingWidth >= (quarterWidth * 2)) {
 		startingHeight += 100;
 		if (startingHeight >= (quarterHeight * 2)) {
+			emit completedRun();
 			return;
 		}
 		widthDisplayed = quarterWidth;
@@ -213,6 +221,7 @@ void BigJPEG::_badImage()
 				heightDisplayed = quarterHeight;
 				return _displayImages();
 			} else if (startingHeight >= (quarterHeight * 2)) {
+				emit completedRun();
 				return;
 			}
 		}
@@ -221,7 +230,7 @@ void BigJPEG::_badImage()
 		bool left = (startingWidth < quarterWidth);
 		bool top = (startingHeight < quarterHeight);
 		startingWidth += 100;
-		if (left && top && startingWidth >= quarterWidth) {
+		if (left && top && (startingWidth >= quarterWidth)) {
 			startingHeight += 100;
 			if (startingHeight >= quarterHeight) {
 				startingWidth = quarterWidth;
@@ -233,7 +242,7 @@ void BigJPEG::_badImage()
 				widthDisplayed = quarterWidth;
 				return _displayImages();
 			}
-		} else if (top && startingWidth >= (quarterWidth * 2)) {
+		} else if (top && (startingWidth >= (quarterWidth * 2))) {
 			startingHeight += 100;
 			if (startingHeight >= quarterHeight) {
 				startingHeight = quarterHeight;
@@ -246,7 +255,7 @@ void BigJPEG::_badImage()
 				widthDisplayed = quarterWidth;
 				return _displayImages();
 			}
-		} else if (left && startingWidth >= (quarterWidth * 2)) {
+		} else if (left && (startingWidth >= (quarterWidth * 2))) {
 			startingHeight += 100;
 			if (startingHeight >= (quarterHeight * 2)) {
 				startingHeight = quarterHeight;
@@ -262,6 +271,7 @@ void BigJPEG::_badImage()
 		} else if (startingWidth >= (quarterWidth * 2)) {
 			startingHeight += 100;
 			if (startingHeight >= (startingHeight * 2)){
+				emit completedRun();
 				return;
 			}
 			widthDisplayed = quarterWidth;

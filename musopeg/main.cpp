@@ -1,6 +1,7 @@
 #include <QGraphicsScene>
 #include <QApplication>
 #include <iostream>
+#include <fstream>
 #include "bigjpeg.h"
 #include "mainwindow.h"
 
