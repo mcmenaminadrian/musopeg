@@ -60,12 +60,12 @@ BigJPEG::BigJPEG(const string& fileName)
 
 	jpeg_finish_decompress(&cinfo);
 	jpeg_destroy_decompress(&cinfo);
-
+	fclose(inFile);
 }
 
 BigJPEG::~BigJPEG()
 {
-	for (int i = 0; i < lines.size(); i++)
+	for (unsigned int i = 0; i < lines.size(); i++)
 	{
 		unsigned char *lineOut = lines.at(i);
 		free(lineOut);
@@ -95,7 +95,7 @@ void BigJPEG::displayImages()
 
 void BigJPEG::_displayImages()
 {
-	display(cInfo, widthDisplayed, heightDisplayed,
+	display(widthDisplayed, heightDisplayed,
 		startingWidth, startingHeight);
 }
 
@@ -128,7 +128,7 @@ void BigJPEG::_goodImage()
 	if (left && (startingWidth >= quarterWidth)) {
 		startingHeight += 100;
 		widthDisplayed = quarterWidth;
-		if (top && (startingHeight >= quarterHeight) || (
+		if ((top && (startingHeight >= quarterHeight)) || (
 			!top && (startingHeight >= (quarterHeight * 2)))) {
 			startingWidth = quarterWidth;
 			if (top) {
@@ -271,8 +271,7 @@ void BigJPEG::_badImage()
 	return _displayImages();
 }
 
-void BigJPEG::display(const struct jpeg_decompress_struct& cinfo, int widthD, int heightD,
-	int startW, int startH)
+void BigJPEG::display(int widthD, int heightD, int startW, int startH)
 {
 	delete topImage;
 	topImage = NULL;

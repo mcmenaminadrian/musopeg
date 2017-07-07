@@ -17,8 +17,7 @@ private:
 	int startingWidth, startingHeight;
 	int widthRag, heightRag, quarterHeight, quarterWidth;
 	struct jpeg_decompress_struct cInfo;
-	void display(const struct jpeg_decompress_struct& dinfo, int widthD, int heightD,
-		 int startW, int startH);
+	void display(int widthD, int heightD, int startW, int startH);
 	void _displayImages();
 	void _badImage();
 	void _goodImage();
