@@ -162,12 +162,13 @@ void BigJPEG::_goodImage()
 			return;
 		}
 		widthDisplayed = quarterWidth;
-		startingWidth = quarterWidth;
 		if (top && startingHeight >= quarterHeight) {
+			startingWidth = 0;
 			startingHeight = quarterHeight;
 			heightDisplayed = quarterHeight;
 			return _displayImages();
 		} else {
+			startingWidth = quarterWidth;
 			return _displayImages();
 		}
 	}
@@ -177,26 +178,25 @@ void BigJPEG::_goodImage()
 void BigJPEG::badImage()
 {
 	_badImage();
-
 }
 
 void BigJPEG::_badImage()
 {
-
 	//quarters or strips
 	if (widthDisplayed > 100) {
 		if (heightDisplayed > 100) {
 			//first quarter and third
 			if (startingWidth == 0) {
-				startingWidth += widthDisplayed;
+				startingWidth = quarterWidth;
 				return _displayImages();
 			} else {
 			//second or fourth quarter
 				if (startingHeight > 0) {
+					emit completedRun();
 					return;
 				} else {
 					startingWidth = 0;
-					startingHeight += heightDisplayed;
+					startingHeight = quarterHeight;
 					return _displayImages();
 				}
 			}
@@ -217,7 +217,6 @@ void BigJPEG::_badImage()
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
 				return _displayImages();
-
 			} else if (left && (startingHeight >= (quarterHeight * 2))) {
 				startingHeight = quarterHeight;
 				startingWidth = quarterWidth;
