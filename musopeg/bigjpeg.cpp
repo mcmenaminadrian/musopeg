@@ -147,7 +147,11 @@ void BigJPEG::_goodImage()
 			heightDisplayed = quarterHeight;
 			return _displayImages();
 		} else {
-			startingWidth = 0;
+			if (top) {
+				startingWidth = 0;
+			} else {
+				startingWidth = quarterWidth;
+			}
 			heightDisplayed = 100;
 			return _displayImages();
 		}
@@ -158,7 +162,7 @@ void BigJPEG::_goodImage()
 			return;
 		}
 		widthDisplayed = quarterWidth;
-		startingWidth = 0;
+		startingWidth = quarterWidth;
 		if (top && startingHeight >= quarterHeight) {
 			startingHeight = quarterHeight;
 			heightDisplayed = quarterHeight;
@@ -207,14 +211,14 @@ void BigJPEG::_badImage()
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
 				return _displayImages();
-			} else if (top && startingHeight >= quarterHeight) {
+			} else if (top && (startingHeight >= quarterHeight)) {
 				startingHeight = quarterHeight;
 				startingWidth = 0;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
 				return _displayImages();
 
-			} else if (left && startingHeight >= (quarterHeight * 2)) {
+			} else if (left && (startingHeight >= (quarterHeight * 2))) {
 				startingHeight = quarterHeight;
 				startingWidth = quarterWidth;
 				widthDisplayed = quarterWidth;
@@ -234,6 +238,7 @@ void BigJPEG::_badImage()
 			startingHeight += 100;
 			if (startingHeight >= quarterHeight) {
 				startingWidth = quarterWidth;
+				startingHeight = quarterHeight;
 				widthDisplayed = quarterWidth;
 				heightDisplayed = quarterHeight;
 				return _displayImages();
@@ -248,14 +253,14 @@ void BigJPEG::_badImage()
 				startingHeight = quarterHeight;
 				startingWidth = 0;
 				widthDisplayed = quarterWidth;
-				heightDisplayed = quarterWidth;
+				heightDisplayed = quarterHeight;
 				return _displayImages();
 			} else {
 				startingWidth = quarterWidth;
 				widthDisplayed = quarterWidth;
 				return _displayImages();
 			}
-		} else if (left && (startingWidth >= (quarterWidth * 2))) {
+		} else if (left && (startingWidth >= quarterWidth)) {
 			startingHeight += 100;
 			if (startingHeight >= (quarterHeight * 2)) {
 				startingHeight = quarterHeight;
