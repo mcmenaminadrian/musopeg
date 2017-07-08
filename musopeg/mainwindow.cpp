@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+	delete showUs;
+	delete holder;
 	delete ui;
 }
 

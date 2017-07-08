@@ -264,7 +264,7 @@ void BigJPEG::_badImage()
 				heightDisplayed = quarterHeight;
 				return _displayImages();
 			} else {
-				startingWidth = quarterWidth;
+				startingWidth = 0;
 				widthDisplayed = quarterWidth;
 				return _displayImages();
 			}
