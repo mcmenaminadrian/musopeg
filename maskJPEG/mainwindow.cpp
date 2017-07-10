@@ -110,6 +110,7 @@ void MainWindow::updateGraphics()
 	qDeleteAll(showUs->items());
 	QPixmap musicPix = QPixmap::fromImage(*musicPic);
 	showUs->addPixmap(musicPix);
+	disconnect();
 
 }
 
